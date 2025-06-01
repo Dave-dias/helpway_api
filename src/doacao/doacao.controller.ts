@@ -16,7 +16,7 @@ import {
 import { DoacaoService } from './doacao.service';
 import { CreateDoacaoDto } from './dto/create-doacao.dto';
 import { DoacaoResponseDto } from './dto/doacao-response.dto';
-import { Prisma } from '../../generated/prisma';
+import { Prisma } from '@prisma/client';
 import Decimal = Prisma.Decimal;
 
 @ApiTags('doacao')

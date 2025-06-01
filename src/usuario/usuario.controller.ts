@@ -8,7 +8,6 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsuarioService } from './usuario.service';
-import { Usuario } from '../../generated/prisma';
 import { CreateUsuarioDto } from './dto/create-usuario-dto';
 import { UsuarioResponseDto } from './dto/usuario-response.dto';
 
@@ -45,7 +44,7 @@ export class UsuarioController {
       throw new NotFoundException(`Usuário não foi encontrado`);
     }
 
-    const usuario: Usuario | null = await this.usuarioService.findOne(idNumber);
+    const usuario = await this.usuarioService.findOne(idNumber);
 
     if (!usuario) {
       throw new NotFoundException(`Usuário não foi encontrado`);
@@ -65,8 +64,7 @@ export class UsuarioController {
   async findByEmail(
     @Param('email') email: string,
   ): Promise<UsuarioResponseDto> {
-    const usuario: Usuario | null =
-      await this.usuarioService.findByEmail(email);
+    const usuario = await this.usuarioService.findByEmail(email);
 
     if (!usuario) {
       throw new NotFoundException(

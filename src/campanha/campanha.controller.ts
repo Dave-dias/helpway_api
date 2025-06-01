@@ -19,7 +19,7 @@ import { CreateCampanhaDto } from './dto/create-campanha.dto';
 import { UpdateCampanhaDto } from './dto/update-campanha.dto';
 import { Campanha } from '@prisma/client';
 import { CampanhaResponseDto } from './dto/campanha-response.dto';
-import { Prisma } from '../../generated/prisma';
+import { Prisma } from '@prisma/client';
 import Decimal = Prisma.Decimal;
 
 @ApiTags('campanha')
