@@ -1,0 +1,50 @@
+import { ApiProperty } from '@nestjs/swagger';
+
+export class CampanhaResponseDto {
+  @ApiProperty({ example: 1, description: 'ID da campanha' })
+  id: number;
+
+  @ApiProperty({
+    example: 'Campanha de Natal',
+    description: 'Título da campanha',
+  })
+  titulo: string;
+
+  @ApiProperty({
+    example: 'Ajude as famílias carentes neste Natal',
+    description: 'Subtítulo da campanha',
+  })
+  subtitulo: string;
+
+  @ApiProperty({
+    example: 'https://example.com/logo.png',
+    description: 'URL do logotipo da campanha',
+  })
+  img_logotipo: string;
+
+  @ApiProperty({
+    example: 'https://example.com/banner.png',
+    description: 'URL do banner da campanha',
+  })
+  img_banner: string;
+
+  @ApiProperty({ example: 100000, description: 'Meta de doações da campanha' })
+  meta_doacoes: number;
+
+  @ApiProperty({
+    example: 1,
+    description: 'Tipo da campanha (1 - Online, 2 - Local)',
+  })
+  tp_campanha: number;
+
+  @ApiProperty({
+    example: 2,
+    description:
+      'Tipo de localidade da campanha (1 - Regional, 2 - Nacional, 3 - Mundial)',
+  })
+  tp_localidade: number;
+
+  constructor(partial: Partial<CampanhaResponseDto>) {
+    Object.assign(this, partial);
+  }
+}
