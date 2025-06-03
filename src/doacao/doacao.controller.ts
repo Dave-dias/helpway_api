@@ -16,8 +16,7 @@ import {
 import { DoacaoService } from './doacao.service';
 import { CreateDoacaoDto } from './dto/create-doacao.dto';
 import { DoacaoResponseDto } from './dto/doacao-response.dto';
-import { Prisma } from '@prisma/client';
-import Decimal = Prisma.Decimal;
+import { toDoacaoResponseDto } from './mapper/doacao.mapper';
 
 @ApiTags('doacao')
 @Controller('doacao')
@@ -37,12 +36,7 @@ export class DoacaoController {
   ): Promise<DoacaoResponseDto> {
     const doacao = await this.doacaoService.create(createDoacaoDto);
 
-    return {
-      id: doacao.id,
-      valor: (doacao.valor as Decimal).toNumber(),
-      id_usuario: doacao.id_usuario,
-      id_campanha: doacao.id_campanha,
-    };
+    return toDoacaoResponseDto(doacao);
   }
 
   @Get()
@@ -55,12 +49,7 @@ export class DoacaoController {
   async findAll(): Promise<DoacaoResponseDto[]> {
     const doacoes = await this.doacaoService.findAll();
 
-    return doacoes.map((doacao) => ({
-      id: doacao.id,
-      valor: (doacao.valor as Decimal).toNumber(),
-      id_usuario: doacao.id_usuario,
-      id_campanha: doacao.id_campanha,
-    }));
+    return doacoes.map((doacao) => toDoacaoResponseDto(doacao));
   }
 
   @Get(':id')
@@ -79,12 +68,7 @@ export class DoacaoController {
       throw new NotFoundException('Não foi encontrada nenhuma doação');
     }
 
-    return {
-      id: doacao.id,
-      valor: (doacao.valor as Decimal).toNumber(),
-      id_usuario: doacao.id_usuario,
-      id_campanha: doacao.id_campanha,
-    };
+    return toDoacaoResponseDto(doacao);
   }
 
   @Get('usuario/:idUsuario')
@@ -108,12 +92,7 @@ export class DoacaoController {
       throw new NotFoundException('Não foi encontrada nenhuma doação');
     }
 
-    return doacoes.map((doacao) => ({
-      id: doacao.id,
-      valor: (doacao.valor as Decimal).toNumber(),
-      id_usuario: doacao.id_usuario,
-      id_campanha: doacao.id_campanha,
-    }));
+    return doacoes.map((doacao) => toDoacaoResponseDto(doacao));
   }
 
   @Get('campanha/:idCampanha')
@@ -137,11 +116,6 @@ export class DoacaoController {
       throw new NotFoundException('Não foi encontrada nenhuma doação');
     }
 
-    return doacoes.map((doacao) => ({
-      id: doacao.id,
-      valor: (doacao.valor as Decimal).toNumber(),
-      id_usuario: doacao.id_usuario,
-      id_campanha: doacao.id_campanha,
-    }));
+    return doacoes.map((doacao) => toDoacaoResponseDto(doacao));
   }
 }

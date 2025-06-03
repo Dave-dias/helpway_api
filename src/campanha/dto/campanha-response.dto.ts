@@ -38,6 +38,12 @@ export class CampanhaResponseDto {
   tp_campanha: number;
 
   @ApiProperty({
+    example: 1,
+    description: 'Tipo da doção (1 - Dinheiro, 2 - Alimento, 3 - Vestimentas)',
+  })
+  tp_doacao: number;
+
+  @ApiProperty({
     example: 2,
     description:
       'Tipo de localidade da campanha (1 - Regional, 2 - Nacional, 3 - Mundial)',

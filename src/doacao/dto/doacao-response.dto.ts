@@ -4,9 +4,6 @@ export class DoacaoResponseDto {
   @ApiProperty({ example: 1, description: 'ID da doação' })
   id: number;
 
-  @ApiProperty({ example: 100.5, description: 'Valor da doação em reais' })
-  valor: number;
-
   @ApiProperty({
     example: 10,
     description: 'ID do usuário que realizou a doação',
@@ -18,4 +15,13 @@ export class DoacaoResponseDto {
     description: 'ID da campanha que recebeu a doação',
   })
   id_campanha: number;
+
+  @ApiProperty({ example: 100.5, description: 'Valor da doação em reais' })
+  valor: number;
+
+  @ApiProperty({
+    example: 1,
+    description: 'Tipo da doção (1 - Dinheiro, 2 - Alimento, 3 - Vestimentas)',
+  })
+  tp_doacao: number;
 }

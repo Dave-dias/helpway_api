@@ -10,6 +10,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario-dto';
 import { UsuarioResponseDto } from './dto/usuario-response.dto';
+import { toUsuarioResponseDto } from './mapper/doacao.mapper';
+import { Usuario } from '@prisma/client';
 
 @ApiTags('Usuário')
 @Controller('usuario')
@@ -23,10 +25,12 @@ export class UsuarioController {
     description: 'Usuário criado com sucesso.',
     type: UsuarioResponseDto,
   })
-  create(
+  async create(
     @Body() createUsuarioDto: CreateUsuarioDto,
   ): Promise<UsuarioResponseDto> {
-    return this.usuarioService.create(createUsuarioDto);
+    const usuario: Usuario = await this.usuarioService.create(createUsuarioDto);
+
+    return toUsuarioResponseDto(usuario);
   }
 
   @Get(':id')
@@ -50,7 +54,7 @@ export class UsuarioController {
       throw new NotFoundException(`Usuário não foi encontrado`);
     }
 
-    return usuario;
+    return toUsuarioResponseDto(usuario);
   }
 
   @Get('email/:email')
@@ -72,6 +76,6 @@ export class UsuarioController {
       );
     }
 
-    return usuario;
+    return toUsuarioResponseDto(usuario);
   }
 }

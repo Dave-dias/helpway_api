@@ -14,12 +14,13 @@ datasource db {
 }
 
 model Usuario {
-  id      Int      @id @default(autoincrement())
-  nome    String
-  email   String   @unique
-  senha   String
-  tp_usuario  Int
-  doacoes Doacao[]
+  id            Int      @id @default(autoincrement())
+  nome          String
+  email         String   @unique
+  senha         String
+  dt_nascimento DateTime
+  tp_usuario    Int
+  doacoes       Doacao[]
 }
 
 model Campanha {
@@ -30,15 +31,17 @@ model Campanha {
   img_banner    String
   meta_doacoes  Decimal
   tp_campanha   Int
+  tp_doacao     Int
   tp_localidade Int
   doacoes       Doacao[]
 }
 
 model Doacao {
   id          Int      @id @default(autoincrement())
-  valor       Decimal
   id_usuario  Int
   id_campanha Int
+  valor       Decimal
+  tp_doacao   Int
   usuario     Usuario  @relation(fields: [id_usuario], references: [id])
   campanha    Campanha @relation(fields: [id_campanha], references: [id])
 }

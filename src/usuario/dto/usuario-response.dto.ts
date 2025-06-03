@@ -20,7 +20,10 @@ export class UsuarioResponseDto {
   @Exclude()
   senha: string;
 
-  @ApiProperty({ example: 1, description: 'Tipo de usuário (1 - Admin, 2 - Comum)' })
+  @ApiProperty({
+    example: 1,
+    description: 'Tipo de usuário (1 - Doador, 2 - Destinatario)',
+  })
   tp_usuario: number;
 
   constructor(partial: Partial<UsuarioResponseDto>) {

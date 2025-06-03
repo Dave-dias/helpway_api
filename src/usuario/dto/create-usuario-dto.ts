@@ -2,6 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUsuarioDto {
   @ApiProperty({
+    description: 'Imagem do usuario em Base64',
+  })
+  img_usuario: string;
+
+  @ApiProperty({
     example: 'Ana Paula De Souza',
     description: 'Nome do usuário',
   })
@@ -20,8 +25,14 @@ export class CreateUsuarioDto {
   senha: string;
 
   @ApiProperty({
+    example: '2025-06-01T15:00:00Z',
+    description: 'Data de nascimento em formato ISO 8601',
+  })
+  dt_nascimento: Date;
+
+  @ApiProperty({
     example: 1,
-    description: 'Tipo de usuário (1 - Admin, 2 - Comum)',
+    description: 'Tipo de usuário (1 - Doador, 2 - Destinatario)',
   })
   tp_usuario: number;
 }

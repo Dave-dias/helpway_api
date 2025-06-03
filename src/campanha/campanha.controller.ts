@@ -19,8 +19,7 @@ import { CreateCampanhaDto } from './dto/create-campanha.dto';
 import { UpdateCampanhaDto } from './dto/update-campanha.dto';
 import { Campanha } from '@prisma/client';
 import { CampanhaResponseDto } from './dto/campanha-response.dto';
-import { Prisma } from '@prisma/client';
-import Decimal = Prisma.Decimal;
+import { toCampanhaResponseDto } from './mapper/doacao.mapper';
 
 @ApiTags('campanha')
 @Controller('campanha')
@@ -40,16 +39,7 @@ export class CampanhaController {
   ): Promise<CampanhaResponseDto> {
     const campanha = await this.campanhaService.create(createCampanhaDto);
 
-    return {
-      id: campanha.id,
-      titulo: campanha.titulo,
-      subtitulo: campanha.subtitulo,
-      img_logotipo: campanha.img_logotipo,
-      img_banner: campanha.img_banner,
-      meta_doacoes: (campanha.meta_doacoes as Decimal).toNumber(),
-      tp_campanha: campanha.tp_campanha,
-      tp_localidade: campanha.tp_localidade,
-    };
+    return toCampanhaResponseDto(campanha);
   }
 
   @Get()
@@ -66,16 +56,7 @@ export class CampanhaController {
       throw new NotFoundException('Nenhuma campanha encontrada');
     }
 
-    return campanhas.map((campanha) => ({
-      id: campanha.id,
-      titulo: campanha.titulo,
-      subtitulo: campanha.subtitulo,
-      img_logotipo: campanha.img_logotipo,
-      img_banner: campanha.img_banner,
-      meta_doacoes: (campanha.meta_doacoes as Decimal).toNumber(),
-      tp_campanha: campanha.tp_campanha,
-      tp_localidade: campanha.tp_localidade,
-    }));
+    return campanhas.map((campanha) => toCampanhaResponseDto(campanha));
   }
 
   @Get(':id')
@@ -94,16 +75,7 @@ export class CampanhaController {
       throw new NotFoundException('Campanha não encontrada');
     }
 
-    return {
-      id: campanha.id,
-      titulo: campanha.titulo,
-      subtitulo: campanha.subtitulo,
-      img_logotipo: campanha.img_logotipo,
-      img_banner: campanha.img_banner,
-      meta_doacoes: (campanha.meta_doacoes as Decimal).toNumber(),
-      tp_campanha: campanha.tp_campanha,
-      tp_localidade: campanha.tp_localidade,
-    };
+    return toCampanhaResponseDto(campanha);
   }
 
   @Get('localidade/:tpLocalidade')
@@ -135,16 +107,7 @@ export class CampanhaController {
       throw new NotFoundException(`Nenhuma campanha foi encontrada`);
     }
 
-    return campanhas.map((campanha) => ({
-      id: campanha.id,
-      titulo: campanha.titulo,
-      subtitulo: campanha.subtitulo,
-      img_logotipo: campanha.img_logotipo,
-      img_banner: campanha.img_banner,
-      meta_doacoes: (campanha.meta_doacoes as Decimal).toNumber(),
-      tp_campanha: campanha.tp_campanha,
-      tp_localidade: campanha.tp_localidade,
-    }));
+    return campanhas.map((campanha) => toCampanhaResponseDto(campanha));
   }
 
   @Patch(':id')
@@ -172,15 +135,6 @@ export class CampanhaController {
       updateCampanhaDto,
     );
 
-    return {
-      id: campanha.id,
-      titulo: campanha.titulo,
-      subtitulo: campanha.subtitulo,
-      img_logotipo: campanha.img_logotipo,
-      img_banner: campanha.img_banner,
-      meta_doacoes: (campanha.meta_doacoes as Decimal).toNumber(),
-      tp_campanha: campanha.tp_campanha,
-      tp_localidade: campanha.tp_localidade,
-    };
+    return toCampanhaResponseDto(campanha);
   }
 }
