@@ -18,6 +18,7 @@ model Usuario {
   nome          String
   email         String   @unique
   senha         String
+  img_usuario   String
   dt_nascimento DateTime
   tp_usuario    Int
   doacoes       Doacao[]
