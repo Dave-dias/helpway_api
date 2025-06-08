@@ -4,14 +4,22 @@ import {
   Get,
   NotFoundException,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario-dto';
 import { UsuarioResponseDto } from './dto/usuario-response.dto';
 import { toUsuarioResponseDto } from './mapper/doacao.mapper';
 import { Usuario } from '@prisma/client';
+import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 
 @ApiTags('Usuário')
 @Controller('usuario')
@@ -75,6 +83,34 @@ export class UsuarioController {
         `Usuário com email: ${email}, não foi encontrado`,
       );
     }
+
+    return toUsuarioResponseDto(usuario);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Atualizar um usuário via Id' })
+  @ApiParam({ name: 'id', type: Number, description: 'ID do usuário' })
+  @ApiBody({ type: UpdateUsuarioDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Usuário atualizado',
+    type: UsuarioResponseDto,
+  })
+  @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
+  async update(
+    @Param('id') id: string,
+    @Body() updateUsuarioDto: UpdateUsuarioDto,
+  ): Promise<UsuarioResponseDto> {
+    const idNumber = Number(id);
+
+    if (isNaN(idNumber)) {
+      throw new NotFoundException(`Usuário não foi encontrado`);
+    }
+
+    const usuario = await this.usuarioService.update(
+      idNumber,
+      updateUsuarioDto,
+    );
 
     return toUsuarioResponseDto(usuario);
   }
