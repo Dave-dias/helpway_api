@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDoacaoDto } from './dto/create-doacao.dto';
 import { PrismaService } from '../../prisma/prisma.service';
+import { UpdateDoacaoDto } from './dto/update-doacao.dto';
+import { Doacao } from '@prisma/client';
 
 @Injectable()
 export class DoacaoService {
@@ -18,13 +20,10 @@ export class DoacaoService {
     return this.prisma.doacao.findUnique({ where: { id: id } });
   }
 
-  findAllByIdUsuario(idUsuario: number) {
-    return this.prisma.doacao.findMany({ where: { id_usuario: idUsuario } });
-  }
-
-  findAllByIdCampanha(idCampanha: number) {
-    return this.prisma.doacao.findMany({
-      where: { id_campanha: idCampanha },
+  update(id: number, data: UpdateDoacaoDto): Promise<Doacao> {
+    return this.prisma.doacao.update({
+      where: { id },
+      data,
     });
   }
 }

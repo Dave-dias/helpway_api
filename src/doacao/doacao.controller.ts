@@ -4,6 +4,7 @@ import {
   Get,
   NotFoundException,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import {
@@ -17,6 +18,7 @@ import { DoacaoService } from './doacao.service';
 import { CreateDoacaoDto } from './dto/create-doacao.dto';
 import { DoacaoResponseDto } from './dto/doacao-response.dto';
 import { toDoacaoResponseDto } from './mapper/doacao.mapper';
+import { UpdateDoacaoDto } from './dto/update-doacao.dto';
 
 @ApiTags('doacao')
 @Controller('doacao')
@@ -71,51 +73,26 @@ export class DoacaoController {
     return toDoacaoResponseDto(doacao);
   }
 
-  @Get('usuario/:idUsuario')
-  @ApiOperation({ summary: 'Lista todas as doações de um usuário' })
-  @ApiParam({ name: 'idUsuario', type: Number, description: 'ID do usuário' })
+  @Patch(':id')
+  @ApiOperation({ summary: 'Atualiza uma doação existente' })
+  @ApiParam({ name: 'id', type: Number, description: 'ID da doação' })
+  @ApiBody({ type: UpdateDoacaoDto })
   @ApiResponse({
     status: 200,
-    description: 'Lista de doações do usuário',
-    type: [DoacaoResponseDto],
+    description: 'Doação atualizada com sucesso',
+    type: DoacaoResponseDto,
   })
-  @ApiResponse({
-    status: 404,
-    description: 'Nenhuma doação encontrada para o usuário',
-  })
-  async findAllByIdUsuario(
-    @Param('idUsuario') idUsuario: string,
-  ): Promise<DoacaoResponseDto[]> {
-    const doacoes = await this.doacaoService.findAllByIdUsuario(+idUsuario);
+  @ApiResponse({ status: 404, description: 'Doação não encontrada' })
+  async update(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateDoacaoDto,
+  ): Promise<DoacaoResponseDto> {
+    const doacao = await this.doacaoService.update(+id, updateDto);
 
-    if (!doacoes || doacoes.length === 0) {
+    if (!doacao) {
       throw new NotFoundException('Não foi encontrada nenhuma doação');
     }
 
-    return doacoes.map((doacao) => toDoacaoResponseDto(doacao));
-  }
-
-  @Get('campanha/:idCampanha')
-  @ApiOperation({ summary: 'Lista todas as doações de uma campanha' })
-  @ApiParam({ name: 'idCampanha', type: Number, description: 'ID da campanha' })
-  @ApiResponse({
-    status: 200,
-    description: 'Lista de doações da campanha',
-    type: [DoacaoResponseDto],
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Nenhuma doação encontrada para a campanha',
-  })
-  async findAllByIdCampanha(
-    @Param('idCampanha') idCampanha: string,
-  ): Promise<DoacaoResponseDto[]> {
-    const doacoes = await this.doacaoService.findAllByIdCampanha(+idCampanha);
-
-    if (!doacoes || doacoes.length === 0) {
-      throw new NotFoundException('Não foi encontrada nenhuma doação');
-    }
-
-    return doacoes.map((doacao) => toDoacaoResponseDto(doacao));
+    return toDoacaoResponseDto(doacao);
   }
 }

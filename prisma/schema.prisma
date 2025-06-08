@@ -21,28 +21,15 @@ model Usuario {
   img_usuario   String
   dt_nascimento DateTime
   tp_usuario    Int
-  doacoes       Doacao[]
-}
-
-model Campanha {
-  id            Int      @id @default(autoincrement())
-  titulo        String
-  subtitulo     String
-  img_logotipo  String
-  img_banner    String
-  meta_doacoes  Decimal
-  tp_campanha   Int
-  tp_doacao     Int
-  tp_localidade Int
-  doacoes       Doacao[]
 }
 
 model Doacao {
-  id          Int      @id @default(autoincrement())
-  id_usuario  Int
-  id_campanha Int
-  valor       Decimal
-  tp_doacao   Int
-  usuario     Usuario  @relation(fields: [id_usuario], references: [id])
-  campanha    Campanha @relation(fields: [id_campanha], references: [id])
+  id              Int     @id @default(autoincrement())
+  titulo          String
+  subtitulo       String
+  descricao       String
+  imagem_url      String
+  meta_doacoes    Decimal
+  valor_levantado Decimal
+  tp_doacao       Int
 }
