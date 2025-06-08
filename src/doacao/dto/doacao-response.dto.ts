@@ -36,7 +36,7 @@ export class DoacaoResponseDto {
 
   @ApiProperty({
     example: 1,
-    description: 'Tipo da doação (1 - Dinheiro, 2 - Alimento, 3 - Vestimentas)',
+    description: 'Tipo da doação (1 - Regional, 2 - Nacional, 3 - Mundial)',
   })
   tp_doacao: number;
 }

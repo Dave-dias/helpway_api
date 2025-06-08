@@ -20,7 +20,7 @@ import { DoacaoResponseDto } from './dto/doacao-response.dto';
 import { toDoacaoResponseDto } from './mapper/doacao.mapper';
 import { UpdateDoacaoDto } from './dto/update-doacao.dto';
 
-@ApiTags('doacao')
+@ApiTags('Doação')
 @Controller('doacao')
 export class DoacaoController {
   constructor(private readonly doacaoService: DoacaoService) {}
