@@ -7,19 +7,19 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 export class UsuarioService {
   constructor(private prisma: PrismaService) {}
 
-  create(createUsuarioDto: CreateUsuarioDto) {
+  async create(createUsuarioDto: CreateUsuarioDto) {
     return this.prisma.usuario.create({ data: createUsuarioDto });
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return this.prisma.usuario.findUnique({ where: { id } });
   }
 
-  findByEmail(email: string) {
+  async findByEmail(email: string) {
     return this.prisma.usuario.findUnique({ where: { email } });
   }
 
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
+  async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
     return this.prisma.usuario.update({
       where: { id: id },
       data: updateUsuarioDto,

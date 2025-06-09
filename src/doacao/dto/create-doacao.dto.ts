@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { CreateLocalizacaoDto } from './create-localizacao.dto';
 
 export class CreateDoacaoDto {
   @ApiProperty({
@@ -31,9 +32,25 @@ export class CreateDoacaoDto {
   @ApiProperty({ example: 250.5, description: 'Valor já arrecadado em reais' })
   valor_levantado: number;
 
+  @ApiProperty({ example: true, description: 'Indica se é doação em dinheiro' })
+  fg_dinheiro: boolean;
+
   @ApiProperty({
-    example: 1,
-    description: 'Tipo da doação (1 - Dinheiro, 2 - Alimento, 3 - Vestimentas)',
+    example: false,
+    description: 'Indica se é doação de alimentação',
   })
-  tp_doacao: number;
+  fg_alimentacao: boolean;
+
+  @ApiProperty({
+    example: false,
+    description: 'Indica se é doação de vestuário',
+  })
+  fg_vestuario: boolean;
+
+  @ApiProperty({
+    type: CreateLocalizacaoDto,
+    description: 'Localização da doação',
+    required: false,
+  })
+  localizacao: CreateLocalizacaoDto;
 }

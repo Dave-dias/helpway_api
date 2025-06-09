@@ -31,5 +31,15 @@ model Doacao {
   imagem_url      String
   meta_doacoes    Decimal
   valor_levantado Decimal
-  tp_doacao       Int
+  fg_dinheiro     Boolean
+  fg_alimentacao  Boolean
+  fg_vestuario    Boolean
+  localizacao     Local?  @relation
+}
+
+model Local {
+  id_doacao Int    @id
+  latitude  Float
+  longitude Float
+  doacao    Doacao @relation(fields: [id_doacao], references: [id])
 }

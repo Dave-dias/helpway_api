@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -33,10 +34,15 @@ export class DoacaoController {
     description: 'Doação criada com sucesso',
     type: DoacaoResponseDto,
   })
+  @ApiResponse({ status: 400, description: 'Não foi possivel criar a doação' })
   async create(
     @Body() createDoacaoDto: CreateDoacaoDto,
   ): Promise<DoacaoResponseDto> {
     const doacao = await this.doacaoService.create(createDoacaoDto);
+
+    if (!doacao) {
+      throw new BadRequestException('Não foi possivel criar a doação');
+    }
 
     return toDoacaoResponseDto(doacao);
   }
@@ -51,7 +57,9 @@ export class DoacaoController {
   async findAll(): Promise<DoacaoResponseDto[]> {
     const doacoes = await this.doacaoService.findAll();
 
-    return doacoes.map((doacao) => toDoacaoResponseDto(doacao));
+    return doacoes
+      .filter((doacao) => doacao !== null)
+      .map((doacao) => toDoacaoResponseDto(doacao));
   }
 
   @Get(':id')

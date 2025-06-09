@@ -1,15 +1,27 @@
 import { DoacaoResponseDto } from '../dto/doacao-response.dto';
-import { Doacao } from '@prisma/client';
+import { Doacao, Local } from '@prisma/client';
+import { DoacaoEntity } from '../entity/doacao.entity';
+import { toLocalResponseDto } from './local.mapper';
 
-export function toDoacaoResponseDto(doacao: Doacao): DoacaoResponseDto {
+export function toDoacaoResponseDto(doacao: DoacaoEntity): DoacaoResponseDto {
   return {
-    id: doacao.id,
-    titulo: doacao.titulo,
-    subtitulo: doacao.subtitulo,
-    descricao: doacao.descricao,
-    imagem_url: doacao.imagem_url,
+    ...doacao,
+    meta_doacoes: doacao.meta_doacoes,
+    valor_levantado: doacao.valor_levantado,
+    localizacao: toLocalResponseDto(doacao.localizacao),
+  };
+}
+
+export function toDoacaoEntity(
+  doacao?: Doacao | null,
+  local?: Local,
+): DoacaoEntity | null {
+  if (!doacao) return null;
+
+  return {
+    ...doacao,
     meta_doacoes: doacao.meta_doacoes.toNumber(),
     valor_levantado: doacao.valor_levantado.toNumber(),
-    tp_doacao: doacao.tp_doacao,
+    localizacao: local,
   };
 }

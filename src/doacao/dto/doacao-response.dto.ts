@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { LocalResponseDto } from './local-response.dto';
 
 export class DoacaoResponseDto {
   @ApiProperty({ example: 1, description: 'ID da doação' })
@@ -34,9 +35,25 @@ export class DoacaoResponseDto {
   @ApiProperty({ example: 250.5, description: 'Valor já arrecadado em reais' })
   valor_levantado: number;
 
+  @ApiProperty({ example: true, description: 'Indica se é doação em dinheiro' })
+  fg_dinheiro: boolean;
+
   @ApiProperty({
-    example: 1,
-    description: 'Tipo da doação (1 - Regional, 2 - Nacional, 3 - Mundial)',
+    example: false,
+    description: 'Indica se é doação de alimentação',
   })
-  tp_doacao: number;
+  fg_alimentacao: boolean;
+
+  @ApiProperty({
+    example: false,
+    description: 'Indica se é doação de vestuário',
+  })
+  fg_vestuario: boolean;
+
+  @ApiProperty({
+    type: LocalResponseDto,
+    description: 'Localização da doação',
+    required: false,
+  })
+  localizacao?: LocalResponseDto;
 }

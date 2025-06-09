@@ -2,28 +2,56 @@ import { Injectable } from '@nestjs/common';
 import { CreateDoacaoDto } from './dto/create-doacao.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UpdateDoacaoDto } from './dto/update-doacao.dto';
-import { Doacao } from '@prisma/client';
+import { DoacaoEntity } from './entity/doacao.entity';
+import { toDoacaoEntity } from './mapper/doacao.mapper';
 
 @Injectable()
 export class DoacaoService {
   constructor(private prisma: PrismaService) {}
 
-  create(createDoacaoDto: CreateDoacaoDto) {
-    return this.prisma.doacao.create({ data: createDoacaoDto });
+  async create(createDoacaoDto: CreateDoacaoDto): Promise<DoacaoEntity | null> {
+    const { localizacao, ...doacaoData } = createDoacaoDto;
+
+    const doacao = await this.prisma.doacao.create({
+      data: {
+        ...doacaoData,
+        localizacao: {
+          create: localizacao,
+        },
+      },
+      include: { localizacao: true },
+    });
+
+    return toDoacaoEntity(doacao);
   }
 
-  findAll() {
-    return this.prisma.doacao.findMany();
+  async findAll(): Promise<(DoacaoEntity | null)[]> {
+    const doacoes = await this.prisma.doacao.findMany({
+      include: { localizacao: true },
+    });
+
+    return doacoes.map((doacao) => toDoacaoEntity(doacao));
   }
 
-  findOne(id: number) {
-    return this.prisma.doacao.findUnique({ where: { id: id } });
+  async findOne(id: number): Promise<DoacaoEntity | null> {
+    const doacao = await this.prisma.doacao.findUnique({
+      where: { id },
+      include: { localizacao: true },
+    });
+
+    return toDoacaoEntity(doacao);
   }
 
-  update(id: number, data: UpdateDoacaoDto): Promise<Doacao> {
-    return this.prisma.doacao.update({
+  async update(
+    id: number,
+    data: UpdateDoacaoDto,
+  ): Promise<DoacaoEntity | null> {
+    const doacao = await this.prisma.doacao.update({
       where: { id },
       data,
+      include: { localizacao: true },
     });
+
+    return toDoacaoEntity(doacao);
   }
 }
