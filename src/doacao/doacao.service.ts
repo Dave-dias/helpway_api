@@ -48,9 +48,28 @@ export class DoacaoService {
     id: number,
     data: UpdateDoacaoDto,
   ): Promise<DoacaoEntity | null> {
+    const { localizacao, ...doacaoData } = data;
+
     const doacao = await this.prisma.doacao.update({
       where: { id },
-      data,
+      data: {
+        ...doacaoData,
+        ...(localizacao?.update && {
+          localizacao: {
+            update: localizacao.update,
+          },
+        }),
+        ...(localizacao?.create && {
+          localizacao: {
+            create: localizacao.create,
+          },
+        }),
+        ...(localizacao?.delete && {
+          localizacao: {
+            delete: true,
+          },
+        }),
+      },
       include: { localizacao: true },
     });
 

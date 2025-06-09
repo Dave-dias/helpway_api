@@ -1,4 +1,5 @@
-import { CreateLocalizacaoDto } from './create-localizacao.dto';
+import { Type } from 'class-transformer';
+import { LocalizacaoUpdateDto } from './update-localizacao.dto';
 
 export class UpdateDoacaoDto {
   titulo?: string;
@@ -10,10 +11,6 @@ export class UpdateDoacaoDto {
   fg_dinheiro?: boolean;
   fg_alimentacao?: boolean;
   fg_vestuario?: boolean;
-
-  localizacao?: {
-    update?: Partial<CreateLocalizacaoDto>;
-    create?: CreateLocalizacaoDto;
-    delete?: boolean;
-  };
+  @Type(() => LocalizacaoUpdateDto)
+  localizacao?: LocalizacaoUpdateDto;
 }
