@@ -39,6 +39,8 @@ export class DoacaoService {
       include: { localizacao: true },
     });
 
+    if (!doacao) return null;
+
     return toDoacaoEntity(doacao);
   }
 
