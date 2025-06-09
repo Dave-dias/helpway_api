@@ -1,4 +1,4 @@
-import { Local } from '@prisma/client';
+
 import { LocalEntity } from './local.entity';
 
 export class DoacaoEntity {

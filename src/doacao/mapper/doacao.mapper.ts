@@ -13,8 +13,7 @@ export function toDoacaoResponseDto(doacao: DoacaoEntity): DoacaoResponseDto {
 }
 
 export function toDoacaoEntity(
-  doacao?: Doacao | null,
-  local?: Local,
+  doacao?: Doacao & { localizacao?: Local | null },
 ): DoacaoEntity | null {
   if (!doacao) return null;
 
@@ -22,6 +21,6 @@ export function toDoacaoEntity(
     ...doacao,
     meta_doacoes: doacao.meta_doacoes.toNumber(),
     valor_levantado: doacao.valor_levantado.toNumber(),
-    localizacao: local,
+    localizacao: doacao.localizacao ?? undefined,
   };
 }
