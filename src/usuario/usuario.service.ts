@@ -22,7 +22,10 @@ export class UsuarioService {
   async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
     return this.prisma.usuario.update({
       where: { id: id },
-      data: updateUsuarioDto,
+      data: {
+        ...updateUsuarioDto,
+        senha: updateUsuarioDto.nova_senha,
+      },
     });
   }
 }

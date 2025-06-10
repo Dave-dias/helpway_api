@@ -15,9 +15,15 @@ export class UpdateUsuarioDto {
 
   @ApiProperty({
     example: '123456',
-    description: 'Senha do usuário',
+    description: 'Senha atual do usuário',
   })
-  senha?: string;
+  senha_atual?: string;
+
+  @ApiProperty({
+    example: '654321',
+    description: 'Nova senha do usuário',
+  })
+  nova_senha?: string;
 
   @ApiProperty({
     description: 'Imagem do usuario como string',

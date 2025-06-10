@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  UnauthorizedException,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -17,7 +18,7 @@ import {
 import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario-dto';
 import { UsuarioResponseDto } from './dto/usuario-response.dto';
-import { toUsuarioResponseDto } from './mapper/doacao.mapper';
+import { toUsuarioResponseDto } from './mapper/usuario.mapper';
 import { Usuario } from '@prisma/client';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 
@@ -96,21 +97,28 @@ export class UsuarioController {
     description: 'Usuário atualizado',
     type: UsuarioResponseDto,
   })
+  @ApiResponse({
+    status: 401,
+    description: 'Senha atual informada não condiz com a senha cadastrada.',
+  })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
   async update(
     @Param('id') id: string,
     @Body() updateUsuarioDto: UpdateUsuarioDto,
   ): Promise<UsuarioResponseDto> {
-    const idNumber = Number(id);
+    const oldUsuario = await this.usuarioService.findOne(+id);
 
-    if (isNaN(idNumber)) {
+    if (!oldUsuario) {
       throw new NotFoundException(`Usuário não foi encontrado`);
     }
 
-    const usuario = await this.usuarioService.update(
-      idNumber,
-      updateUsuarioDto,
-    );
+    if (oldUsuario.senha !== updateUsuarioDto.senha_atual) {
+      throw new UnauthorizedException(
+        `Email ou senha informados são incorretos`,
+      );
+    }
+
+    const usuario = await this.usuarioService.update(+id, updateUsuarioDto);
 
     return toUsuarioResponseDto(usuario);
   }
