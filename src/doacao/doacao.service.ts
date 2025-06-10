@@ -4,6 +4,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { UpdateDoacaoDto } from './dto/update-doacao.dto';
 import { DoacaoEntity } from './entity/doacao.entity';
 import { toDoacaoEntity } from './mapper/doacao.mapper';
+import { UpdateLocalizacaoDto } from './dto/update-localizacao.dto';
 
 @Injectable()
 export class DoacaoService {
@@ -44,31 +45,52 @@ export class DoacaoService {
     return toDoacaoEntity(doacao);
   }
 
-  async update(
+  async updateDoacao(
     id: number,
     data: UpdateDoacaoDto,
   ): Promise<DoacaoEntity | null> {
-    const { localizacao, ...doacaoData } = data;
+    const doacao = await this.prisma.doacao.update({
+      where: { id },
+      data: data,
+      include: { localizacao: true },
+    });
 
+    return toDoacaoEntity(doacao);
+  }
+
+  async updateLocalizacao(
+    id: number,
+    data: UpdateLocalizacaoDto,
+  ): Promise<DoacaoEntity | null> {
     const doacao = await this.prisma.doacao.update({
       where: { id },
       data: {
-        ...doacaoData,
-        ...(localizacao?.update && {
-          localizacao: {
-            update: localizacao.update,
+        localizacao: {
+          upsert: {
+            update: {
+              latitude: data.latitude,
+              longitude: data.longitude,
+            },
+            create: {
+              latitude: data.latitude,
+              longitude: data.longitude,
+            },
           },
-        }),
-        ...(localizacao?.create && {
-          localizacao: {
-            create: localizacao.create,
-          },
-        }),
-        ...(localizacao?.delete && {
-          localizacao: {
-            delete: true,
-          },
-        }),
+        },
+      },
+      include: { localizacao: true },
+    });
+
+    return toDoacaoEntity(doacao);
+  }
+
+  async deleteLocalizacao(id: number): Promise<DoacaoEntity | null> {
+    const doacao = await this.prisma.doacao.update({
+      where: { id },
+      data: {
+        localizacao: {
+          delete: true,
+        },
       },
       include: { localizacao: true },
     });

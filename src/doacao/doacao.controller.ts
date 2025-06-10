@@ -1,7 +1,7 @@
 import {
   BadRequestException,
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   NotFoundException,
   Param,
@@ -95,12 +95,25 @@ export class DoacaoController {
     @Param('id') id: string,
     @Body() updateDto: UpdateDoacaoDto,
   ): Promise<DoacaoResponseDto> {
-    const doacao = await this.doacaoService.update(+id, updateDto);
+    const doacao = await this.doacaoService.updateDoacao(+id, updateDto);
 
     if (!doacao) {
       throw new NotFoundException('Não foi encontrada nenhuma doação');
     }
 
     return toDoacaoResponseDto(doacao);
+  }
+
+  @Delete(':id/localizacao')
+  @ApiOperation({ summary: 'Remove a localização associada à doação' })
+  @ApiParam({ name: 'id', type: Number, description: 'ID da doação' })
+  @ApiResponse({ status: 200, description: 'Localização removida com sucesso' })
+  @ApiResponse({ status: 404, description: 'Doação não encontrada' })
+  async deleteLocalizacao(@Param('id') id: string): Promise<void> {
+    const success = await this.doacaoService.deleteLocalizacao(+id);
+
+    if (!success) {
+      throw new NotFoundException('Doação não encontrada ou sem localização');
+    }
   }
 }

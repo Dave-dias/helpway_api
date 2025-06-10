@@ -1,5 +1,3 @@
-import { Type } from 'class-transformer';
-import { LocalizacaoUpdateDto } from './update-localizacao.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateDoacaoDto {
@@ -47,8 +45,4 @@ export class UpdateDoacaoDto {
     description: 'Indica se é doação de vestuário',
   })
   fg_vestuario?: boolean;
-
-  @ApiPropertyOptional({ type: LocalizacaoUpdateDto })
-  @Type(() => LocalizacaoUpdateDto)
-  localizacao?: LocalizacaoUpdateDto;
 }
