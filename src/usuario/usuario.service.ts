@@ -20,11 +20,13 @@ export class UsuarioService {
   }
 
   async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
+    const { senha_atual, nova_senha, ...resto } = updateUsuarioDto;
+
     return this.prisma.usuario.update({
       where: { id: id },
       data: {
-        ...updateUsuarioDto,
-        senha: updateUsuarioDto.nova_senha,
+        ...resto,
+        ...(nova_senha && { senha: nova_senha }),
       },
     });
   }
