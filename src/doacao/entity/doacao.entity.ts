@@ -6,7 +6,7 @@ export class DoacaoEntity {
   titulo: string;
   subtitulo: string;
   descricao: string;
-  imagem_url: string;
+  imagem_base64: string;
   meta_doacoes: number;
   valor_levantado: number;
   fg_dinheiro: boolean;

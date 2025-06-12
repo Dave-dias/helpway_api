@@ -28,7 +28,7 @@ model Doacao {
   titulo          String
   subtitulo       String
   descricao       String
-  imagem_url      String
+  imagem_base64      String
   meta_doacoes    Decimal
   valor_levantado Decimal
   fg_dinheiro     Boolean

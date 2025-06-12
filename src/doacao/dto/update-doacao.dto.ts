@@ -20,10 +20,10 @@ export class UpdateDoacaoDto {
   descricao?: string;
 
   @ApiProperty({
-    example: 'https://exemplo.com/imagem.jpg',
-    description: 'URL da imagem ilustrativa da doação',
+    example: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...',
+    description: 'Imagem em base64 codificada como string',
   })
-  imagem_url?: string;
+  imagem_base64: string;
 
   @ApiProperty({ example: 1000.0, description: 'Meta de doações em reais' })
   meta_doacoes?: number;
