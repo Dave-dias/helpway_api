@@ -1,8 +1,8 @@
-
 import { LocalEntity } from './local.entity';
 
 export class DoacaoEntity {
   id: number;
+  id_organizador: number;
   titulo: string;
   subtitulo: string;
   descricao: string;

@@ -21,10 +21,13 @@ model Usuario {
   img_usuario   String
   dt_nascimento DateTime
   tp_usuario    Int
+
+  Doacao Doacao[]
 }
 
 model Doacao {
   id              Int     @id @default(autoincrement())
+  id_organizador  Int
   titulo          String
   subtitulo       String
   descricao       String
@@ -35,6 +38,7 @@ model Doacao {
   fg_alimentacao  Boolean
   fg_vestuario    Boolean
   localizacao     Local?  @relation
+  usuario    Usuario @relation(fields: [id_organizador], references: [id])
 }
 
 model Local {

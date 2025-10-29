@@ -3,6 +3,12 @@ import { CreateLocalizacaoDto } from './create-localizacao.dto';
 
 export class CreateDoacaoDto {
   @ApiProperty({
+    example: '1',
+    description: 'ID usuário organizador',
+  })
+  id_organizador: number;
+
+  @ApiProperty({
     example: 'Campanha contra a fome',
     description: 'Título da doação',
   })

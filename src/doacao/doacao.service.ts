@@ -34,6 +34,17 @@ export class DoacaoService {
     return doacoes.map((doacao) => toDoacaoEntity(doacao));
   }
 
+  async findByOrganizadorId(
+    idOrganizador: number,
+  ): Promise<(DoacaoEntity | null)[]> {
+    const doacoes = await this.prisma.doacao.findMany({
+      where: { id_organizador: idOrganizador },
+      include: { localizacao: true },
+    });
+
+    return doacoes.map((doacao) => toDoacaoEntity(doacao));
+  }
+
   async findOne(id: number): Promise<DoacaoEntity | null> {
     const doacao = await this.prisma.doacao.findUnique({
       where: { id },

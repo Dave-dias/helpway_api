@@ -16,16 +16,22 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UsuarioService } from './usuario.service';
+import { DoacaoService } from '../doacao/doacao.service';
 import { CreateUsuarioDto } from './dto/create-usuario-dto';
 import { UsuarioResponseDto } from './dto/usuario-response.dto';
 import { toUsuarioResponseDto } from './mapper/usuario.mapper';
 import { Usuario } from '@prisma/client';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { toDoacaoResponseDto } from '../doacao/mapper/doacao.mapper';
+import { DoacaoResponseDto } from '../doacao/dto/doacao-response.dto';
 
 @ApiTags('Usuário')
 @Controller('usuario')
 export class UsuarioController {
-  constructor(private readonly usuarioService: UsuarioService) {}
+  constructor(
+    private readonly usuarioService: UsuarioService,
+    private readonly doacaoService: DoacaoService,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Cria um novo usuário' })
@@ -121,5 +127,34 @@ export class UsuarioController {
     const usuario = await this.usuarioService.update(+id, updateUsuarioDto);
 
     return toUsuarioResponseDto(usuario);
+  }
+
+  @Get(':id/doacoes')
+  @ApiOperation({
+    summary: 'Listar todas as campanhas de doação criadas por um usuário',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'ID do usuário (organizador)',
+  })
+  @ApiResponse({
+    status: 200,
+    description:
+      'Lista de campanhas de doação do usuário retornada com sucesso.',
+    type: [DoacaoResponseDto],
+  })
+  @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
+  async findDoacoesByUsuario(
+    @Param('id') id: string,
+  ): Promise<DoacaoResponseDto[]> {
+    const usuario = await this.usuarioService.findOne(+id);
+    if (!usuario) {
+      throw new NotFoundException('Usuário não foi encontrado.');
+    }
+
+    const doacoes = await this.doacaoService.findByOrganizadorId(+id);
+
+    return doacoes.map(toDoacaoResponseDto);
   }
 }
