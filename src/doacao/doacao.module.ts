@@ -5,5 +5,6 @@ import { DoacaoController } from './doacao.controller';
 @Module({
   controllers: [DoacaoController],
   providers: [DoacaoService],
+  exports: [DoacaoService],
 })
 export class DoacaoModule {}

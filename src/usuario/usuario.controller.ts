@@ -16,7 +16,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UsuarioService } from './usuario.service';
-import { DoacaoService } from '../doacao/doacao.service';
 import { CreateUsuarioDto } from './dto/create-usuario-dto';
 import { UsuarioResponseDto } from './dto/usuario-response.dto';
 import { toUsuarioResponseDto } from './mapper/usuario.mapper';
@@ -24,6 +23,7 @@ import { Usuario } from '@prisma/client';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { toDoacaoResponseDto } from '../doacao/mapper/doacao.mapper';
 import { DoacaoResponseDto } from '../doacao/dto/doacao-response.dto';
+import { DoacaoService } from '../doacao/doacao.service';
 
 @ApiTags('Usuário')
 @Controller('usuario')
