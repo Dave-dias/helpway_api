@@ -98,7 +98,7 @@ export class UsuarioController {
     const isLoginValido = usuario.senha == loginUsuarioDto.senha;
 
     if (!isLoginValido) {
-      throw new UnauthorizedException(`Login não autorizador`);
+      throw new UnauthorizedException(`Login não autorizado`);
     }
 
     return { message: 'Login válido' };
