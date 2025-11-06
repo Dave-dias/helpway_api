@@ -27,6 +27,7 @@ import { DoacaoService } from '../doacao/doacao.service';
 import { CampanhaService } from '../campanha/campanha.service';
 import { toCampanhaResponseDto } from '../campanha/mapper/campanha.mapper';
 import { CampanhaResponseDto } from '../campanha/dto/campanha-response.dto';
+import { LoginUsuarioDto } from './dto/login-usuario-dto';
 
 @ApiTags('Usuário')
 @Controller('usuario')
@@ -76,26 +77,31 @@ export class UsuarioController {
     return toUsuarioResponseDto(usuario);
   }
 
-  @Get('email/:email')
-  @ApiOperation({ summary: 'Busca um usuário pelo email' })
+  @Post('login')
+  @ApiOperation({ summary: 'Validar login de um usuário' })
   @ApiResponse({
     status: 200,
-    description: 'Usuário encontrado.',
+    description: 'Usuário valido.',
     type: UsuarioResponseDto,
   })
-  @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
-  async findByEmail(
-    @Param('email') email: string,
-  ): Promise<UsuarioResponseDto> {
-    const usuario = await this.usuarioService.findByEmail(email);
+  async validarLogin(@Body() loginUsuarioDto: LoginUsuarioDto) {
+    const usuario = await this.usuarioService.findByEmail(
+      loginUsuarioDto.email,
+    );
 
     if (!usuario) {
       throw new NotFoundException(
-        `Usuário com email: ${email}, não foi encontrado`,
+        `Usuário com email: ${loginUsuarioDto.email}, não foi encontrado`,
       );
     }
 
-    return toUsuarioResponseDto(usuario);
+    const isLoginValido = usuario.senha == loginUsuarioDto.senha;
+
+    if (!isLoginValido) {
+      throw new UnauthorizedException(`Login não autorizador`);
+    }
+
+    return { message: 'Login válido' };
   }
 
   @Patch(':id')
