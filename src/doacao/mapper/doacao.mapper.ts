@@ -1,26 +1,19 @@
 import { DoacaoResponseDto } from '../dto/doacao-response.dto';
-import { Doacao, Local } from '@prisma/client';
+import { Doacao } from '@prisma/client';
 import { DoacaoEntity } from '../entity/doacao.entity';
-import { toLocalResponseDto } from './local.mapper';
 
 export function toDoacaoResponseDto(doacao: DoacaoEntity): DoacaoResponseDto {
   return {
     ...doacao,
-    meta_doacoes: doacao.meta_doacoes,
-    valor_levantado: doacao.valor_levantado,
-    localizacao: toLocalResponseDto(doacao.localizacao),
+    valor: doacao.valor,
   };
 }
 
-export function toDoacaoEntity(
-  doacao?: Doacao & { localizacao?: Local | null },
-): DoacaoEntity | null {
+export function toDoacaoEntity(doacao?: Doacao): DoacaoEntity | null {
   if (!doacao) return null;
 
   return {
     ...doacao,
-    meta_doacoes: doacao.meta_doacoes.toNumber(),
-    valor_levantado: doacao.valor_levantado.toNumber(),
-    localizacao: doacao.localizacao ?? undefined,
+    valor: doacao.valor ? Number(doacao.valor) : 0,
   };
 }

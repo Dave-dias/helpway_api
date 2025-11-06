@@ -20,7 +20,6 @@ import { CreateDoacaoDto } from './dto/create-doacao.dto';
 import { DoacaoResponseDto } from './dto/doacao-response.dto';
 import { toDoacaoResponseDto } from './mapper/doacao.mapper';
 import { UpdateDoacaoDto } from './dto/update-doacao.dto';
-import { UpdateLocalizacaoDto } from './dto/update-localizacao.dto';
 
 @ApiTags('Doação')
 @Controller('doacao')
@@ -49,13 +48,13 @@ export class DoacaoController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Lista todas as doações' })
+  @ApiOperation({ summary: 'Lista todas as doações feitas por um usuário' })
   @ApiResponse({
     status: 200,
     description: 'Lista de doações',
     type: [DoacaoResponseDto],
   })
-  async findAll(): Promise<DoacaoResponseDto[]> {
+  async findAllByIdDoador(): Promise<DoacaoResponseDto[]> {
     const doacoes = await this.doacaoService.findAll();
 
     return doacoes
@@ -103,41 +102,5 @@ export class DoacaoController {
     }
 
     return toDoacaoResponseDto(doacao);
-  }
-
-  @Patch(':id/localizacao')
-  @ApiOperation({ summary: 'Cria ou atualiza a localização da doação' })
-  @ApiParam({ name: 'id', type: Number, description: 'ID da doação' })
-  @ApiBody({ type: UpdateLocalizacaoDto })
-  @ApiResponse({
-    status: 200,
-    description: 'Localização atualizada com sucesso',
-    type: DoacaoResponseDto,
-  })
-  @ApiResponse({ status: 404, description: 'Doação não encontrada' })
-  async updateLocalizacao(
-    @Param('id') id: string,
-    @Body() body: UpdateLocalizacaoDto,
-  ): Promise<DoacaoResponseDto | null> {
-    const doacao = await this.doacaoService.updateLocalizacao(+id, body);
-
-    if (!doacao) {
-      throw new NotFoundException('Não foi encontrada nenhuma doação');
-    }
-
-    return doacao ? toDoacaoResponseDto(doacao) : null;
-  }
-
-  @Delete(':id/localizacao')
-  @ApiOperation({ summary: 'Remove a localização associada à doação' })
-  @ApiParam({ name: 'id', type: Number, description: 'ID da doação' })
-  @ApiResponse({ status: 200, description: 'Localização removida com sucesso' })
-  @ApiResponse({ status: 404, description: 'Doação não encontrada' })
-  async deleteLocalizacao(@Param('id') id: string): Promise<void> {
-    const success = await this.doacaoService.deleteLocalizacao(+id);
-
-    if (!success) {
-      throw new NotFoundException('Doação não encontrada ou sem localização');
-    }
   }
 }

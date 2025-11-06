@@ -24,6 +24,9 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { toDoacaoResponseDto } from '../doacao/mapper/doacao.mapper';
 import { DoacaoResponseDto } from '../doacao/dto/doacao-response.dto';
 import { DoacaoService } from '../doacao/doacao.service';
+import { CampanhaService } from '../campanha/campanha.service';
+import { toCampanhaResponseDto } from '../campanha/mapper/campanha.mapper';
+import { CampanhaResponseDto } from '../campanha/dto/campanha-response.dto';
 
 @ApiTags('Usuário')
 @Controller('usuario')
@@ -31,6 +34,7 @@ export class UsuarioController {
   constructor(
     private readonly usuarioService: UsuarioService,
     private readonly doacaoService: DoacaoService,
+    private readonly campanhaService: CampanhaService,
   ) {}
 
   @Post()
@@ -129,7 +133,7 @@ export class UsuarioController {
     return toUsuarioResponseDto(usuario);
   }
 
-  @Get(':id/doacoes')
+  @Get(':id/campanhas')
   @ApiOperation({
     summary: 'Listar todas as campanhas de doação criadas por um usuário',
   })
@@ -145,6 +149,34 @@ export class UsuarioController {
     type: [DoacaoResponseDto],
   })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
+  async findCampanhasByUsuarioOrganizador(
+    @Param('id') id: string,
+  ): Promise<CampanhaResponseDto[]> {
+    const usuario = await this.usuarioService.findOne(+id);
+    if (!usuario) {
+      throw new NotFoundException('Usuário não foi encontrado.');
+    }
+
+    const campanhas = await this.campanhaService.findByIdOrganizador(+id);
+
+    return campanhas.map(toCampanhaResponseDto);
+  }
+
+  @Get(':id/doacoes')
+  @ApiOperation({
+    summary: 'Listar todas as doações feitas um usuário',
+  })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: 'ID do usuário (doador)',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de doações do usuário retornada com sucesso.',
+    type: [DoacaoResponseDto],
+  })
+  @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
   async findDoacoesByUsuario(
     @Param('id') id: string,
   ): Promise<DoacaoResponseDto[]> {
@@ -153,7 +185,7 @@ export class UsuarioController {
       throw new NotFoundException('Usuário não foi encontrado.');
     }
 
-    const doacoes = await this.doacaoService.findByOrganizadorId(+id);
+    const doacoes = await this.doacaoService.findByIdDoador(+id);
 
     return doacoes.map(toDoacaoResponseDto);
   }

@@ -1,7 +1,7 @@
-import { Doacao, Local } from '@prisma/client';
-import { DoacaoEntity } from '../entity/doacao.entity';
+import { Campanha, Local } from '@prisma/client';
 import { LocalEntity } from '../entity/local.entity';
 import { LocalResponseDto } from '../dto/local-response.dto';
+import { CampanhaEntity } from '../entity/campanha.entity';
 
 export function toLocalResponseDto(
   local?: LocalEntity,
@@ -14,11 +14,13 @@ export function toLocalResponseDto(
   };
 }
 
-export function toDoacaoEntity(doacao: Doacao, local?: Local): DoacaoEntity {
+export function toCampanhaEntity(
+  campanha: Campanha,
+  local?: Local,
+): CampanhaEntity {
   return {
-    ...doacao,
-    meta_doacoes: doacao.meta_doacoes.toNumber(),
-    valor_levantado: doacao.valor_levantado.toNumber(),
+    ...campanha,
+    meta_doacoes: campanha.meta_doacoes.toNumber(),
     localizacao: local,
   };
 }

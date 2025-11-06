@@ -1,35 +1,20 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateDoacaoDto {
   @ApiProperty({
-    example: 'Campanha contra a fome',
-    description: 'Título da doação',
+    example: '1',
+    description: 'ID da campanha',
   })
-  titulo?: string;
+  id_campanha: number;
 
   @ApiProperty({
-    example: 'Ajude famílias em situação de vulnerabilidade',
-    description: 'Subtítulo da doação',
+    example: '1',
+    description: 'ID do usuário organizador',
   })
-  subtitulo?: string;
+  id_doador: number;
 
-  @ApiProperty({
-    example: 'Estamos arrecadando para distribuir cestas básicas...',
-    description: 'Descrição detalhada da doação',
-  })
-  descricao?: string;
-
-  @ApiProperty({
-    example: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...',
-    description: 'Imagem em base64 codificada como string',
-  })
-  imagem_base64: string;
-
-  @ApiProperty({ example: 1000.0, description: 'Meta de doações em reais' })
-  meta_doacoes?: number;
-
-  @ApiProperty({ example: 250.5, description: 'Valor já arrecadado em reais' })
-  valor_levantado?: number;
+  @ApiProperty({ example: 250.5, description: 'Valor arrecadado em reais' })
+  valor?: number;
 
   @ApiProperty({ example: true, description: 'Indica se é doação em dinheiro' })
   fg_dinheiro?: boolean;

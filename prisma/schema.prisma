@@ -22,28 +22,42 @@ model Usuario {
   dt_nascimento DateTime
   tp_usuario    Int
 
-  Doacao Doacao[]
+  Campanha Campanha[]
+  Doacao   Doacao[]
 }
 
-model Doacao {
+model Campanha {
   id              Int     @id @default(autoincrement())
   id_organizador  Int
   titulo          String
   subtitulo       String
   descricao       String
-  imagem_base64      String
+  imagem_base64   String
   meta_doacoes    Decimal
-  valor_levantado Decimal
   fg_dinheiro     Boolean
   fg_alimentacao  Boolean
   fg_vestuario    Boolean
   localizacao     Local?  @relation
-  usuario    Usuario @relation(fields: [id_organizador], references: [id])
+  usuario         Usuario @relation(fields: [id_organizador], references: [id])
+
+  Doacao          Doacao[]
+}
+
+model Doacao {
+  id             Int      @id @default(autoincrement())
+  id_campanha    Int
+  id_doador      Int
+  valor    Decimal
+  fg_dinheiro    Boolean
+  fg_alimentacao Boolean
+  fg_vestuario   Boolean
+  usuario        Usuario  @relation(fields: [id_doador], references: [id])
+  campanha       Campanha @relation(fields: [id_campanha], references: [id])
 }
 
 model Local {
-  id_doacao Int    @id
+  id_doacao Int      @id
   latitude  Float
   longitude Float
-  doacao    Doacao @relation(fields: [id_doacao], references: [id])
+  campanha  Campanha @relation(fields: [id_doacao], references: [id])
 }
