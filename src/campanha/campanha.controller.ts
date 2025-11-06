@@ -100,7 +100,7 @@ export class CampanhaController {
     @Param('id') id: string,
     @Body() updateDto: UpdateCampanhaDto,
   ): Promise<CampanhaResponseDto> {
-    const campanha = await this.campanhaService.updateDoacao(+id, updateDto);
+    const campanha = await this.campanhaService.updateCampanha(+id, updateDto);
 
     if (!campanha) {
       throw new NotFoundException('Não foi encontrada nenhuma campanha');

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { LocalResponseDto } from './local-response.dto';
+import { DoacaoResponseDto } from '../../doacao/dto/doacao-response.dto';
 
 export class CampanhaResponseDto {
   @ApiProperty({ example: 1, description: 'ID da campanha' })
@@ -56,4 +57,11 @@ export class CampanhaResponseDto {
     required: false,
   })
   localizacao?: LocalResponseDto;
+
+  @ApiProperty({
+    type: DoacaoResponseDto,
+    description: 'Doações recebidas na campanha',
+    required: false,
+  })
+  doacoes?: DoacaoResponseDto[];
 }

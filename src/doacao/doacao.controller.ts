@@ -1,7 +1,7 @@
 import {
   BadRequestException,
   Body,
-  Controller, Delete,
+  Controller,
   Get,
   NotFoundException,
   Param,
@@ -45,21 +45,6 @@ export class DoacaoController {
     }
 
     return toDoacaoResponseDto(doacao);
-  }
-
-  @Get()
-  @ApiOperation({ summary: 'Lista todas as doações feitas por um usuário' })
-  @ApiResponse({
-    status: 200,
-    description: 'Lista de doações',
-    type: [DoacaoResponseDto],
-  })
-  async findAllByIdDoador(): Promise<DoacaoResponseDto[]> {
-    const doacoes = await this.doacaoService.findAll();
-
-    return doacoes
-      .filter((doacao) => doacao !== null)
-      .map((doacao) => toDoacaoResponseDto(doacao));
   }
 
   @Get(':id')
