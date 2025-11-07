@@ -84,7 +84,9 @@ export class UsuarioController {
     description: 'Usuário valido.',
     type: UsuarioResponseDto,
   })
-  async validarLogin(@Body() loginUsuarioDto: LoginUsuarioDto) {
+  async validarLogin(
+    @Body() loginUsuarioDto: LoginUsuarioDto,
+  ): Promise<UsuarioResponseDto> {
     const usuario = await this.usuarioService.findByEmail(
       loginUsuarioDto.email,
     );
@@ -101,7 +103,7 @@ export class UsuarioController {
       throw new UnauthorizedException(`Login não autorizado`);
     }
 
-    return { message: 'Login válido' };
+    return toUsuarioResponseDto(usuario);
   }
 
   @Patch(':id')
