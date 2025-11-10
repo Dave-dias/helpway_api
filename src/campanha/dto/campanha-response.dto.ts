@@ -34,6 +34,12 @@ export class CampanhaResponseDto {
   meta_doacoes: number;
 
   @ApiProperty({
+    example: 'nome@exemplo.com',
+    description: 'Chave pix para doações',
+  })
+  chave_pix?: string;
+
+  @ApiProperty({
     example: true,
     description: 'Indica se é campanha em dinheiro',
   })

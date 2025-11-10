@@ -28,6 +28,12 @@ export class UpdateCampanhaDto {
   @ApiProperty({ example: 1000.0, description: 'Meta de doações em reais' })
   meta_doacoes?: number;
 
+  @ApiProperty({
+    example: 'nome@exemplo.com',
+    description: 'Chave pix para doações',
+  })
+  chave_pix?: string;
+
   @ApiProperty({ example: 250.5, description: 'Valor já arrecadado em reais' })
   valor_levantado?: number;
 

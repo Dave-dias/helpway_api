@@ -32,6 +32,12 @@ export class CreateCampanhaDto {
   })
   imagem_base64: string;
 
+  @ApiProperty({
+    example: 'nome@exemplo.com',
+    description: 'Chave pix para doações',
+  })
+  chave_pix?: string;
+
   @ApiProperty({ example: 1000.0, description: 'Meta de doações em reais' })
   meta_doacoes: number;
 
