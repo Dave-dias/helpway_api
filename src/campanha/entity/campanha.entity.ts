@@ -9,7 +9,7 @@ export class CampanhaEntity {
   descricao: string;
   imagem_base64: string;
   meta_doacoes: number;
-  chave_pix?: string;
+  chave_pix: string | null;
   fg_dinheiro: boolean;
   fg_alimentacao: boolean;
   fg_vestuario: boolean;

@@ -37,7 +37,7 @@ export class CampanhaResponseDto {
     example: 'nome@exemplo.com',
     description: 'Chave pix para doações',
   })
-  chave_pix?: string;
+  chave_pix: string | null;
 
   @ApiProperty({
     example: true,
