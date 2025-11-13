@@ -16,6 +16,18 @@ export class DoacaoResponseDto {
   })
   id_doador: number;
 
+  @ApiProperty({
+    example: 'Campanha contra a fome',
+    description: 'Título da campanha',
+  })
+  titulo_campanha?: string;
+
+  @ApiProperty({
+    example: 'Ana Paula',
+    description: 'Nome do organizador da campanha',
+  })
+  nome_organizador?: string;
+
   @ApiProperty({ example: 250.5, description: 'Valor já arrecadado em reais' })
   valor: number;
 
