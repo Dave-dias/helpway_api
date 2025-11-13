@@ -13,7 +13,10 @@ export function toCampanhaResponseDto(
     localizacao: toLocalResponseDto(campanha.localizacao),
     doacoes: campanha.doacoes?.map(toDoacaoResponseDto),
     valor_levantado:
-      campanha.doacoes?.reduce((total, doacao) => total + doacao.valor, 0) ?? 0,
+      campanha.doacoes?.reduce(
+        (total, doacao) => total + Number(doacao.valor ?? 0),
+        0,
+      ) ?? 0,
   };
 }
 
