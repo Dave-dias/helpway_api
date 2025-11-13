@@ -22,7 +22,7 @@ export class CampanhaService {
           create: localizacao,
         },
       },
-      include: { localizacao: true },
+      include: { localizacao: true, usuario: true },
     });
 
     return toCampanhaEntity(campanha);
@@ -30,7 +30,7 @@ export class CampanhaService {
 
   async findAll(): Promise<(CampanhaEntity | null)[]> {
     const campanhas = await this.prisma.campanha.findMany({
-      include: { localizacao: true, Doacao: true },
+      include: { localizacao: true, Doacao: true, usuario: true },
     });
 
     return campanhas.map((campanha) => toCampanhaEntity(campanha));
@@ -41,7 +41,7 @@ export class CampanhaService {
   ): Promise<(CampanhaEntity | null)[]> {
     const campanhas = await this.prisma.campanha.findMany({
       where: { id_organizador: idOrganizador },
-      include: { localizacao: true, Doacao: true },
+      include: { localizacao: true, Doacao: true, usuario: true },
     });
 
     return campanhas.map((campanha) => toCampanhaEntity(campanha));
@@ -50,7 +50,7 @@ export class CampanhaService {
   async findOne(id: number): Promise<CampanhaEntity | null> {
     const campanha = await this.prisma.campanha.findUnique({
       where: { id },
-      include: { localizacao: true, Doacao: true },
+      include: { localizacao: true, Doacao: true, usuario: true },
     });
 
     if (!campanha) return null;
@@ -65,7 +65,7 @@ export class CampanhaService {
     const campanha = await this.prisma.campanha.update({
       where: { id },
       data: data,
-      include: { localizacao: true, Doacao: true },
+      include: { localizacao: true, Doacao: true, usuario: true },
     });
 
     return toCampanhaEntity(campanha);
@@ -91,7 +91,7 @@ export class CampanhaService {
           },
         },
       },
-      include: { localizacao: true },
+      include: { localizacao: true, usuario: true },
     });
 
     return toCampanhaEntity(campanha);
@@ -105,7 +105,7 @@ export class CampanhaService {
           delete: true,
         },
       },
-      include: { localizacao: true },
+      include: { localizacao: true, usuario: true },
     });
 
     return toCampanhaEntity(campanha);

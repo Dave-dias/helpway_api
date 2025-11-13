@@ -22,7 +22,6 @@ export function toDoacaoEntity(
     fg_dinheiro: doacao.fg_dinheiro,
     fg_alimentacao: doacao.fg_alimentacao,
     fg_vestuario: doacao.fg_vestuario,
-    // Safe access for optional relation:
     titulo_campanha: doacao.campanha.titulo,
     nome_organizador: doacao.campanha.usuario?.nome,
   };
