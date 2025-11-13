@@ -12,6 +12,8 @@ export function toCampanhaResponseDto(
     meta_doacoes: campanha.meta_doacoes,
     localizacao: toLocalResponseDto(campanha.localizacao),
     doacoes: campanha.doacoes?.map(toDoacaoResponseDto),
+    valor_levantado:
+      campanha.doacoes?.reduce((total, doacao) => total + doacao.valor, 0) ?? 0,
   };
 }
 

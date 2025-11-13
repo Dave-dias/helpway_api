@@ -16,22 +16,24 @@ export class DoacaoService {
       data: {
         ...doacaoData,
       },
+      include: {
+        campanha: {
+          include: { usuario: true },
+        },
+      },
     });
 
     return toDoacaoEntity(doacao);
   }
 
-  async findAll(): Promise<(DoacaoEntity | null)[]> {
-    const doacoes = await this.prisma.doacao.findMany();
-
-    return doacoes.map((doacao) => toDoacaoEntity(doacao));
-  }
-
-  async findByIdDoador(
-    idDoador: number,
-  ): Promise<(DoacaoEntity | null)[]> {
+  async findByIdDoador(idDoador: number): Promise<DoacaoEntity[]> {
     const doacoes = await this.prisma.doacao.findMany({
       where: { id_doador: idDoador },
+      include: {
+        campanha: {
+          include: { usuario: true },
+        },
+      },
     });
 
     return doacoes.map((doacao) => toDoacaoEntity(doacao));
@@ -40,6 +42,11 @@ export class DoacaoService {
   async findOne(id: number): Promise<DoacaoEntity | null> {
     const doacao = await this.prisma.doacao.findUnique({
       where: { id },
+      include: {
+        campanha: {
+          include: { usuario: true },
+        },
+      },
     });
 
     if (!doacao) return null;
@@ -54,6 +61,11 @@ export class DoacaoService {
     const doacao = await this.prisma.doacao.update({
       where: { id },
       data: data,
+      include: {
+        campanha: {
+          include: { usuario: true },
+        },
+      },
     });
 
     return toDoacaoEntity(doacao);

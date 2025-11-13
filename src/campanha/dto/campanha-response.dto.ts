@@ -34,6 +34,12 @@ export class CampanhaResponseDto {
   meta_doacoes: number;
 
   @ApiProperty({
+    example: 1000.0,
+    description: 'Valor total já levantado na campanha',
+  })
+  valor_levantado: number;
+
+  @ApiProperty({
     example: 'nome@exemplo.com',
     description: 'Chave pix para doações',
   })
